@@ -10,7 +10,20 @@ const Header = () => {
     if (storedUsername) {
       setUsername(storedUsername);
     }
-  }, []);
+
+    // Listen for a custom event when the username is saved
+    const handleUsernameUpdate = () => {
+      const updatedUsername = localStorage.getItem('globetrotterUsername');
+      setUsername(updatedUsername);
+    };
+
+    window.addEventListener('usernameSaved', handleUsernameUpdate);
+
+    // Cleanup the event listener on unmount
+    return () => {
+      window.removeEventListener('usernameSaved', handleUsernameUpdate);
+    };
+  }, []); // Empty dependency array to run only on mount
 
   return (
     <header className="bg-dark text-white shadow-md">
