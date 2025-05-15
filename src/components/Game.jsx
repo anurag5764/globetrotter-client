@@ -58,13 +58,8 @@ const Game = () => {
       }
     };
 
-    // Fetch immediately
     fetchInviterScore();
-
-    // Poll every 10 seconds
     const intervalId = setInterval(fetchInviterScore, 10000);
-
-    // Cleanup interval on unmount
     return () => clearInterval(intervalId);
   }, [invitedBy]);
 
@@ -131,8 +126,10 @@ const Game = () => {
   const handleUsernameSubmit = (e) => {
     e.preventDefault();
     if (username.trim()) {
-      localStorage.setItem('globetrotterUsername', username);
+      localStorage.setItem('globetrotterUsername', username.trim());
       setShowUsernameModal(false);
+      // Dispatch custom event to notify Header
+      window.dispatchEvent(new Event('usernameSaved'));
     }
   };
 
